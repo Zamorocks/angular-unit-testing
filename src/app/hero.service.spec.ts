@@ -29,14 +29,17 @@ describe('HeroService', () => {
     // instead of lines 24-25, we use injection syntax
     it('should call get with the correct URL', () => {
       // call getHero()
-      service.getHero(4).subscribe();
+      service.getHero(4).subscribe(hero => {
+        expect(hero.id).toBe(4);
+      });
 
       // test that the URL was correct
       const req = httpTestingController.expectOne('api/heroes/4');
 
       // flush lets us decide what data gets sent back when GET is called
       req.flush({id: 4, name: 'SuperDude', strength: 100});
-      httpTestingController.verify();
+      // expect(req.request.method).toBe('GET'); // do this or lines 32-34
+      httpTestingController.verify(); //  allows only http requests that we explicitly set and expect
     })
   })
 })
